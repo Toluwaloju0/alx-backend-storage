@@ -1,4 +1,12 @@
--- A script to reset a row in the datatbase
-CREATE TRIGGER valid_E AFTER UPDATE ON users FOR EACH ROW
+-- A script to update a value after a change
+DELIMITER $$
+
+CREATE TRIGGER valid_E BEFORE UPDATE ON users FOR EACH ROW
 -- Trigger body
-    SET NEW.valid_email = 0;
+BEGIN
+    IF NEW.email != OLD.email THEN
+        SET NEW.valid_email = 0;
+    END IF;
+END$$
+
+DELIMITER ;
