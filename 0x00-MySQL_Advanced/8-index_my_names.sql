@@ -1,2 +1,2 @@
 -- A script toindex a database
-CREATE INDEX idx_name_first ON names(name(1))
+CREATE INDEX idx_name_first ON names (name(1))
