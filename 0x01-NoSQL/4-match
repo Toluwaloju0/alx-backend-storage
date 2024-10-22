@@ -1,2 +1,2 @@
-// A script to find di[ocument with a given filter
+// A script to find document with a given filter
 db.school.find({name: "Holberton school"})
