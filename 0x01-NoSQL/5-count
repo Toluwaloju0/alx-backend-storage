@@ -1,0 +1,2 @@
+// a script to doiunt document in a script
+db.school.find().count()

@@ -1,0 +1,2 @@
+// A scri[t to delete a document with a given filter
+db.school.deleteMany({name: 'Holberton school'})
