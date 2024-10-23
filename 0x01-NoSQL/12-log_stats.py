@@ -12,4 +12,4 @@ if __name__ == '__main__':
     for method in methods:
         print(f"\tmethod {method}:\
 {nginx_col.count_documents({'method': method})}")
-    print(f"{nginx_col.count_documents({'path': '/status'})} status check")
+    print(f"{nginx_col.count_documents({'path': '/status', 'method': 'GET'})} status check")
