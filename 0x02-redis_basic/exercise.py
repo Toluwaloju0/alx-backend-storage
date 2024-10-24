@@ -20,7 +20,7 @@ def count_calls(method: Callable) -> Callable:
 
 def call_history(method: Callable) -> Callable:
     @wraps(method)
-    def wrapper_list(*args, **kwargs):i
+    def wrapper_list(*args, **kwargs):
         """A function to push values into a redis list"""
 
         key_input = f"{method.__qualname__}:inputs"
