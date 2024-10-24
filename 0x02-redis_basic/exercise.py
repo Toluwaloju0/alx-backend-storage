@@ -39,8 +39,6 @@ class Cache:
             except Exception:
                 pass
             finally:
-                print(data)
                 return data
         else:
-            print(data)
             return data
