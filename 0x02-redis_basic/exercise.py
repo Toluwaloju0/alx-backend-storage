@@ -17,7 +17,7 @@ def count_calls(method: Callable) -> Callable:
             method_count[method.__qualname__] += 1
         else:
             method_count[method.__qualname__] = 1
-        result = method(args[0], args[1], key=method.__qualname__)
+        result = method(args[0],  method_count.get(method.__qualname__), key=method.__qualname__)
         return result
     return wrapper
 
