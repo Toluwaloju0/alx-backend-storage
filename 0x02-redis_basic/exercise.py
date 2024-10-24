@@ -3,7 +3,7 @@
 
 from functools import wraps
 import redis
-from typing import Any, Callable, List
+from typing import Any, Callable, List, Union
 
 
 def count_calls(method: Callable) -> Callable:
@@ -45,7 +45,7 @@ class Cache:
 
     @count_calls
     @call_history
-    def store(self, data: Any) -> str:
+    def store(self, data: Union[str, byte, int, float]) -> str:
         """A function to store into a redis database"""
 
         import uuid
