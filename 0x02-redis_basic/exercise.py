@@ -11,7 +11,9 @@ def count_calls(method: Callable) -> Callable:
     def wrapper(*args, **kwargs):
         """A function to process a method and return it"""
 
-        result = method(*args, method.__qualname__)
+        result = method(*args)
+        self = args[0]
+        self._redis.incr(method.__qualname__)
         return result
     return wrapper
 
@@ -43,15 +45,13 @@ class Cache:
 
     @count_calls
     @call_history
-    def store(self, data: Union[str, bytes, int, float], *args) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """A function to store into a redis database"""
 
         import uuid
 
         id = str(uuid.uuid4())
         self._redis.set(id, data)
-        if args[0]:
-            self._redis.incr(args[0])
 
         return id
 
