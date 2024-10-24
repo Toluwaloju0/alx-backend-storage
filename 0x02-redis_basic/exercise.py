@@ -26,10 +26,10 @@ def call_history(method: Callable) -> Callable:
         key_input = f"{method.__qualname__}:inputs"
         key_output = f"{method.__qualname__}:outputs"
 
-        r = redis.Redis()
-        r.rpush(key_input, str(args[1]))
+        self = args[0]
+        self._redis.rpush(key_input, str(args[1]))
         result = method(*args)
-        r.rpush(key_output, result)
+        self._redis.rpush(key_output, result)
 
         return result
     return wrapper_list
