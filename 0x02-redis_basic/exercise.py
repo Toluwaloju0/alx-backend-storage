@@ -3,7 +3,7 @@
 
 from functools import wraps
 import redis
-from typing import Any, Callable
+from typing import Any, Callable, List
 
 
 def count_calls(method: Callable) -> Callable:
@@ -25,7 +25,7 @@ def call_history(method: Callable) -> Callable:
 
         key_input = f"{method.__qualname__}:inputs"
         key_output = f"{method.__qualname__}:outputs"
-        
+
         r = redis.Redis()
         r.rpush(key_input, str(args[1]))
         result = method(*args)
@@ -61,11 +61,40 @@ class Cache:
         data = self._redis.get(key)
 
         if data and fn:
-            try:
-                data = fn(data)
-            except Exception:
-                pass
-            finally:
-                return data
-        else:
+            data = fn(data)
+        return data
+
+    def get_int(self, key: str):
+        """A function to get a int data"""
+
+        data = self._redis.get(key)
+        print(data, '-----', key)
+        try:
+            data = int(data)
             return data
+        except Exception:
+            return None
+
+    def get_str(self, key: str):
+        try:
+            data = self._redis.get(key)
+            return data.decode('utf-8')
+        except Exception:
+            return None
+
+
+def replay(method: callable):
+    """A function to get the inputs in adatabase"""
+
+    cache = Cache()
+    r = redis.Redis()
+
+    num = cache.getint(method.__qualname__)
+
+    print(f'{method} was called {num} times:')
+
+    inputs: List = r.lrange(f"{method.__qualname__}:inputs", 0, -1)
+    outputs: List = r.lrange(f"{method.__qualname__}:outputs", 0, -1)
+
+    for a in range(len(inputs)):
+        print(f"Cache.store(*('{inputs[a]}',)) -> {outputs[a]}")
