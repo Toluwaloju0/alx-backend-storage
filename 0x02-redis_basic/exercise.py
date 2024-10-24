@@ -20,9 +20,12 @@ def count_calls(method: Callable) -> Callable:
 
 def call_history(method: Callable) -> Callable:
     @wraps(method)
-    def wrapper_list(*args, **kwargs):
+    def wrapper_list(*args, **kwargs):i
+        """A function to push values into a redis list"""
+
         key_input = f"{method.__qualname__}:inputs"
         key_output = f"{method.__qualname__}:outputs"
+        
         r = redis.Redis()
         r.rpush(key_input, str(args[1]))
         result = method(*args)
