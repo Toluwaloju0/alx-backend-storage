@@ -45,7 +45,7 @@ class Cache:
 
     @count_calls
     @call_history
-    def store(self, data: Union[str, byte, int, float]) -> str:
+    def store(self, data: Union[str, bytes, int, float]) -> str:
         """A function to store into a redis database"""
 
         import uuid
