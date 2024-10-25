@@ -1,2 +1,2 @@
 // A scipt to query the database for names starting with Holberton
-db.school.find({$regexMatch: {name:})
+db.school.find()
