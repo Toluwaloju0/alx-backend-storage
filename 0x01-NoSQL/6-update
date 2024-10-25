@@ -1,4 +1,2 @@
 // A script to update a diocumnet in a collection
-db.school.updateMany({name: "Holberton school"},
-    {$set: {address: "972 Mission street"}}
-)
+db.school.updateMany({name: "Holberton school"}, {$set: {address: "972 Mission street"}})
