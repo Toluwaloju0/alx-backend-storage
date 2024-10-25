@@ -7,6 +7,8 @@ from typing import Any, Callable, List, Union
 
 
 def count_calls(method: Callable) -> Callable:
+    """A wrapper to wrap a function and count it calls"""
+
     @wraps(method)
     def wrapper(*args, **kwargs):
         """A function to process a method and return it"""
@@ -19,6 +21,8 @@ def count_calls(method: Callable) -> Callable:
 
 
 def call_history(method: Callable) -> Callable:
+    """A wrapper to store inputs and outputs in a list"""
+
     @wraps(method)
     def wrapper_list(*args, **kwargs):
         """A function to push values into a redis list"""
@@ -87,15 +91,18 @@ class Cache:
 def replay(method: callable):
     """A function to get the inputs in adatabase"""
 
-    cache = Cache()
     r = redis.Redis()
 
-    num = cache.getint(method.__qualname__)
+    print(f'{method.__qualname__} was \
+called {int(r.get(method.__qualname__))} times:')
 
-    print(f'{method} was called {num} times:')
+    key_input = f"{method.__qualname__}:inputs"
+    key_output = f"{method.__qualname__}:outputs"
 
-    inputs: List = r.lrange(f"{method.__qualname__}:inputs", 0, -1)
-    outputs: List = r.lrange(f"{method.__qualname__}:outputs", 0, -1)
+    items = zip(
+        r.lrange(key_input, 0, -1),
+        r.lrange(key_output, 0, -1)
+    )
 
-    for a in range(len(inputs)):
-        print(f"Cache.store(*('{inputs[a]}',)) -> {outputs[a]}")
+    for item in items:
+        print(f"{method.__qualname__} {item[0].decode('utf-8')} -> {item[1]}")
