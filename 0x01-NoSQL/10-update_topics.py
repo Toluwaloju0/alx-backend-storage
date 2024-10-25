@@ -6,5 +6,4 @@ if __name__ != '__main__':
         """A function to update a database"""
 
         mongo_collection.update_one({'name': name},
-                                    {'$set': {'topics': topics}},
-                                    upsert=True)
+                                    {'$set': {'topics': topics}})
